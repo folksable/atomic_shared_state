@@ -4,13 +4,14 @@ typedef Listener = void Function();
 
 /// A logger instance for logging messages and errors.
 final Logger _logger = Logger(
-  printer: PrettyPrinter(),
+  printer: SimplePrinter(),
 );
 
 /// A generic class representing a shared state object.
 class SharedStateObject<T> {
   T _value;
   final List<Listener> _listeners = [];
+  static final bool log = false;
 
   /// Constructs a [SharedStateObject] with an initial value.
   SharedStateObject(this._value);
@@ -27,13 +28,17 @@ class SharedStateObject<T> {
   /// Adds a listener function to the shared state object.
   void addListener(Listener listener) {
     _listeners.add(listener);
-    _logger.i('Listener added to the shared state object. Total listeners: ${_listeners.length}');
+    if(log) {
+      _logger.i('Listener added to the shared state object. Total listeners: ${_listeners.length}');
+    }
   }
 
   /// Removes a listener function from the shared state object.
   void removeListener(Listener listener) {
     _listeners.remove(listener);
-    _logger.i('Listener removed from the shared state object. Total listeners: ${_listeners.length}');
+    if(log) {
+      _logger.i('Listener removed from the shared state object. Total listeners: ${_listeners.length}');
+    }
   }
 
   /// Notifies all listeners of the shared state object.
